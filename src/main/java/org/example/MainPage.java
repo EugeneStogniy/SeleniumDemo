@@ -14,7 +14,14 @@ public class MainPage extends BasePage {
     @FindBy(xpath = "//i[@class='fas fa-user']/..")
     private WebElement accountMenuItem;
     @FindBy(xpath = "//a[contains(@href, 'login')]")
-    private WebElement menuLoginitem;
+    private WebElement menuLoginItem;
+
+    @FindBy(linkText = "Desktops")
+    private WebElement desktopsLink;
+
+    @FindBy(linkText = "Show All Desktops")
+    private WebElement allDesktopsLink;
+
 
     public MainPage() {
         PageFactory.initElements(driver, this);
@@ -32,8 +39,19 @@ public class MainPage extends BasePage {
     }
 
     public LoginPage clickLoginSubMenuitem() {
-        clickOnElementJS(menuLoginitem);
+        clickOnElementJS(menuLoginItem);
         return new LoginPage();
     }
+
+    public MainPage clickOnDesktopsLink() {
+        desktopsLink.click();
+        return this;
+    }
+
+    public DesktopsPage clickOnAllDesktopsLink() {
+        allDesktopsLink.click();
+        return new DesktopsPage();
+    }
+
 
 }

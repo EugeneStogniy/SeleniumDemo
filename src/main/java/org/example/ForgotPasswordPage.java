@@ -20,14 +20,11 @@ public class ForgotPasswordPage extends BasePage {
 
 
     public ForgotPasswordPage fillEMail(String email) {
-
         eMailInput.sendKeys(email);
         return this;
-
     }
 
     public AllertWithError submitForm() {
-
         continueButton.click();
         return new AllertWithError();
 

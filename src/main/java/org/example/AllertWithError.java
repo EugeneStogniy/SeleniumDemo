@@ -23,8 +23,8 @@ public class AllertWithError extends BasePage {
         return allertError.getText();
     }
 
-    public AllertWithError waitForAllert() throws InterruptedException {
-        sleep(500);
+    public AllertWithError waitForAllert() {
+        super.waitUntilPresent(new By.ByXPath("//div[contains(@class, 'alert')]"), 1);
         return this;
     }
 
