@@ -4,9 +4,9 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
-
 
 import java.time.Duration;
 
@@ -24,7 +24,6 @@ public class BasePage {
 
 
     public static WebElement find(By locator) {
-
         return getDriver().findElement(locator);
     }
 
@@ -59,6 +58,15 @@ public class BasePage {
     protected void waitUntilPageIsLoaded() {
         ((JavascriptExecutor) getDriver()).executeScript("return document.readyState")
                 .equals("complete");
+    }
+
+    protected void hoverOverElement(WebElement element) {
+        Actions action = new Actions(getDriver());
+        action.moveToElement(element).perform();
+    }
+
+    protected void hoverOverElement(By locator) {
+        hoverOverElement(find(locator));
     }
 
 }
