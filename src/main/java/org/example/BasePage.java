@@ -69,4 +69,20 @@ public class BasePage {
         hoverOverElement(find(locator));
     }
 
+    protected Double getPriceFromElement(WebElement withPrice) {
+        String price;
+        TopMenuPage topMenuPage = new TopMenuPage();
+        topMenuPage.currentCurrency();
+        price = withPrice.getText().replace(topMenuPage.currentCurrency(), "");
+        return Double.valueOf(price);
+    }
+
+    protected Double getPriceFromElement(String withPrice) {
+        String price;
+        TopMenuPage topMenuPage = new TopMenuPage();
+        topMenuPage.currentCurrency();
+        price = withPrice.replace(topMenuPage.currentCurrency(), "");
+        return Double.valueOf(price);
+    }
+
 }

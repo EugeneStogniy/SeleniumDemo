@@ -13,30 +13,29 @@ public class MainPage extends BasePage {
     @FindBy(linkText = "Show All Desktops")
     private WebElement allDesktopsLink;
 
-
     @FindBy(xpath = "//*[@id='content']//a[contains(@href,'product_id=40') and contains(text(),'iPhone')]")
     private WebElement productIphoneLink;
 
+    @FindBy(xpath = "//a[contains(@href,'path=33') and contains(text(),'Cameras')]")
+    private WebElement cameraslink;
 
     public MainPage() {
         PageFactory.initElements(driver, this);
     }
-
 
     public BrandPage clickBrandsLink() {
         clickOnElementJS(brandsLinkLocator);
         return new BrandPage();
     }
 
-
     public MainPage clickOnDesktopsLink() {
         desktopsLink.click();
         return this;
     }
 
-    public DesktopsPage clickOnAllDesktopsLink() {
+    public ProductsPage clickOnAllDesktopsLink() {
         allDesktopsLink.click();
-        return new DesktopsPage();
+        return new ProductsPage();
     }
 
     public MainPage hoverOnDesktopMenu() {
@@ -49,6 +48,11 @@ public class MainPage extends BasePage {
 
         productIphoneLink.click();
         return new ProductDetailsPage();
+    }
+
+    public ProductsPage clickOnCameraslink() {
+        cameraslink.click();
+        return new ProductsPage();
     }
 
 

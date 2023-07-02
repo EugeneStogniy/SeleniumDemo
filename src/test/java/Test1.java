@@ -31,7 +31,7 @@ public class Test1 extends BaseTest {
                 .clickForgottenPasswordLink()
                 .fillEMail("testwqeqdsadsdsa@test.com")
                 .submitForm()
-                .waitForAllert().returnError();
+                .waitForAlert().returnError();
 
         Assert.assertEquals(actualError, "Warning: The E-Mail Address was not found in our records!", "Unexpected E-mail validation error");
     }
@@ -41,14 +41,14 @@ public class Test1 extends BaseTest {
         SoftAssertions softAssertions = new SoftAssertions();
 
         MainPage mainPage = new MainPage();
-        DesktopsPage desktopsPage = new DesktopsPage();
+        ProductsPage productsPage = new ProductsPage();
         int amountOfProducts = mainPage.clickOnDesktopsLink()
                 .clickOnAllDesktopsLink().amountOfProductsOnPage();
 
-        String displayLimit = desktopsPage.currentValueOfDisplayLimit();
-        String sortValue = desktopsPage.currentValueOfSort();
+        String displayLimit = productsPage.currentValueOfDisplayLimit();
+        String sortValue = productsPage.currentValueOfSort();
         String newValueOfDisplayLimit = "25";
-        int changedAmountOfProducts = desktopsPage.setValueOfDisplayLimit(newValueOfDisplayLimit).amountOfProductsOnPage();
+        int changedAmountOfProducts = productsPage.setValueOfDisplayLimit(newValueOfDisplayLimit).amountOfProductsOnPage();
 
         softAssertions.assertThat(amountOfProducts).as("default Products of the page is equal to 10").isEqualTo(10);
         softAssertions.assertThat(changedAmountOfProducts).as(" Products of the page changed  to 12").isEqualTo(12);
@@ -63,14 +63,14 @@ public class Test1 extends BaseTest {
         SoftAssertions softAssertions = new SoftAssertions();
 
         MainPage mainPage = new MainPage();
-        DesktopsPage desktopsPage = new DesktopsPage();
+        ProductsPage productsPage = new ProductsPage();
 
         List<String> actualNames = mainPage.hoverOnDesktopMenu().clickOnAllDesktopsLink().setValueOfSort(SortOptions.NameASC).namesOfProducts();
         List<String> expectedNamesOrder = new ArrayList<>();
         expectedNamesOrder.addAll(actualNames);
         Collections.<String>sort(expectedNamesOrder);
 
-        List<Double> actualPrice = desktopsPage.setValueOfSort(SortOptions.PriceASC).productsPraises();
+        List<Double> actualPrice = productsPage.setValueOfSort(SortOptions.PriceASC).productsPraises();
         List<Double> expectedPricesOrder = new ArrayList<>();
         expectedPricesOrder.addAll(actualPrice);
         Collections.<Double>sort(expectedPricesOrder);
@@ -103,6 +103,29 @@ public class Test1 extends BaseTest {
         softAssertions.assertThat(priceInUSD).as("Iphone price in USD expected to be 123.20").isEqualTo(123.20);
         softAssertions.assertThat(priceInEUR).as("Iphone price in USD expected to be 106.04").isEqualTo(106.04);
         softAssertions.assertThat(priceInGBP).as("Iphone price in GBP expected to be 95.32").isEqualTo(95.32);
+        softAssertions.assertAll();
+    }
+
+
+/*    Test #5
+
+    Go to the https://demo.opencart.com/
+    Click on the Cameras
+    Check that 2 cameras exist on page
+    Check that Canon EOS 5D has old price 122.00
+    Check that Canon EOS 5D has new price 98.00
+    Check that Nikon D300 has ex.rate 80.00*/
+
+    @Test
+    public void checkCameraPrices() {
+        SoftAssertions softAssertions = new SoftAssertions();
+        MainPage mainPage = new MainPage();
+        ProductsPage productsPage = new ProductsPage();
+
+        softAssertions.assertThat(mainPage.clickOnCameraslink().amountOfProductsOnPage()).as("Items on Cameras page should be 2").isEqualTo(2);
+        softAssertions.assertThat(productsPage.returnOldPrice("Canon EOS 5D")).as("Canon EOS 5D has old price 122.00").isEqualTo(122.00);
+        softAssertions.assertThat(productsPage.returnCurrentPrice("Canon EOS 5D")).as("Canon EOS 5D has new price 98.00").isEqualTo(98.00);
+        softAssertions.assertThat(productsPage.returnTaxPrice("Nikon D300")).as("Nikon D300 has ex.rate 80.00").isEqualTo(80.00);
         softAssertions.assertAll();
     }
 

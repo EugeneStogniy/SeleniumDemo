@@ -13,16 +13,11 @@ public class ProductDetailsPage extends BasePage {
         PageFactory.initElements(driver, this);
     }
 
-/*    public String getCurrentPrice(){
-        return priceValue.getText();
-    }*/
 
     public Double getCurrentPrice() {
-        String price;
-        TopMenuPage topMenuPage = new TopMenuPage();
-        topMenuPage.currentCurrency();
-        price = priceValue.getText().replace(topMenuPage.currentCurrency(), "");
-        return Double.valueOf(price);
+
+        return this.getPriceFromElement(priceValue);
+
     }
 
 }

@@ -1,5 +1,6 @@
 package org.example;
 
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
@@ -7,7 +8,9 @@ import org.openqa.selenium.support.PageFactory;
 import java.util.ArrayList;
 import java.util.List;
 
-public class DesktopsPage extends BasePage {
+public class ProductsPage extends BasePage {
+
+    private String productName = "Canon EOS 5D";
     @FindBy(xpath = "//select[@id='input-limit']")
     private WebElement inputLimit;
     @FindBy(xpath = "//*[@id='input-limit']/option[@selected]")
@@ -36,14 +39,13 @@ public class DesktopsPage extends BasePage {
     @FindBy(xpath = "//select[@id='input-sort']/option[text() ='Default']")
     private WebElement inputSortDefaultOption;
 
-
-    @FindBy(xpath = "//*[@id='product-list'] //*[@class='description']/h4")
+    @FindBy(xpath = "//*[@id='product-list']//*[@class='description']/h4")
     private List<WebElement> productsNames;
 
-    @FindBy(xpath = "//*[@id='product-list'] //*[@class='description']/div[@class='price']/span[@class='price-new']")
+    @FindBy(xpath = "//*[@id='product-list']//*[@class='description']/div[@class='price']/span[@class='price-new']")
     private List<WebElement> productsPraises;
 
-    public DesktopsPage() {
+    public ProductsPage() {
         PageFactory.initElements(driver, this);
     }
 
@@ -51,7 +53,7 @@ public class DesktopsPage extends BasePage {
         return inputLimitSelectedOptions.getText();
     }
 
-    public DesktopsPage setValueOfDisplayLimit(String value) {
+    public ProductsPage setValueOfDisplayLimit(String value) {
         inputLimit.sendKeys(value);
         return this;
     }
@@ -64,7 +66,7 @@ public class DesktopsPage extends BasePage {
         return inputSortSelectedOption.getText();
     }
 
-    public DesktopsPage setValueOfSort(SortOptions sortVal) {
+    public ProductsPage setValueOfSort(SortOptions sortVal) {
         inputSort.click();
         switch (sortVal) {
             case PriceASC:
@@ -97,9 +99,27 @@ public class DesktopsPage extends BasePage {
     public List<Double> productsPraises() {
         List<Double> result = new ArrayList<>();
         for (WebElement productPrice : productsPraises) {
-            result.add(Double.valueOf(productPrice.getText().substring(1)));
+            result.add(this.getPriceFromElement(productPrice));
         }
         return result;
+    }
+
+    public Double returnCurrentPrice(String itemName) {
+        String productNewPrice = "//h4/a[contains(text(),'" + itemName + "')]/../../div[@class='price']/span[@class='price-new']";
+        WebElement price = super.waitUntilPresent(new By.ByXPath(productNewPrice), 1);
+        return this.getPriceFromElement(price);
+    }
+
+    public Double returnOldPrice(String itemName) {
+        String productOldPrice = "//h4/a[contains(text(),'" + itemName + "')]/../../div[@class='price']/span[@class='price-old']";
+        WebElement price = waitUntilPresent(new By.ByXPath(productOldPrice), 1);
+        return this.getPriceFromElement(price);
+    }
+
+    public Double returnTaxPrice(String itemName) {
+        String productTaxPrice = "//h4/a[contains(text(),'" + itemName + "')]/../../div[@class='price']/span[@class='price-tax']";
+        WebElement price = waitUntilPresent(new By.ByXPath(productTaxPrice), 1);
+        return this.getPriceFromElement(price.getText().replace("Ex Tax:", ""));
     }
 
 
