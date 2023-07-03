@@ -70,11 +70,7 @@ public class BasePage {
     }
 
     protected Double getPriceFromElement(WebElement withPrice) {
-        String price;
-        TopMenuPage topMenuPage = new TopMenuPage();
-        topMenuPage.currentCurrency();
-        price = withPrice.getText().replace(topMenuPage.currentCurrency(), "");
-        return Double.valueOf(price);
+        return getPriceFromElement(withPrice.getText());
     }
 
     protected Double getPriceFromElement(String withPrice) {
